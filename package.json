@@ -1,6 +1,6 @@
 {
   "name": "vsc-base-kits",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "some base kits from vscode source code",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
