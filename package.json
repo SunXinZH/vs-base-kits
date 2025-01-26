@@ -1,0 +1,33 @@
+{
+  "name": "vs-base-kits",
+  "version": "1.0.0",
+  "description": "some base kits from vscode source code",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": "git+https://github.com/SunXinZH/vs-base-kits.git",
+  "keywords": [
+    "ts",
+    "event",
+    "emitter",
+    "kit"
+  ],
+  "author": "SunXinZH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SunXinZH/vs-base-kits/issues"
+  },
+  "homepage": "https://github.com/SunXinZH/vs-base-kits#readme",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "tsc": "^2.0.4"
+  }
+}

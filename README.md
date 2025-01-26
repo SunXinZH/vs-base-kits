@@ -1,2 +1,2 @@
-# vs-base-kits
-Typescript Common Kits
+# sx-base-kits
+Typescript Common Helper
