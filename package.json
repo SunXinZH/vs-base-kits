@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "ts-node ./scripts/clean.ts && tsc"
   },
   "repository": "git+https://github.com/SunXinZH/vs-base-kits.git",
   "keywords": [
@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/SunXinZH/vs-base-kits#readme",
   "devDependencies": {
+    "@types/node": "^22.10.10",
+    "ts-node": "^10.9.2",
     "typescript": "^4.4.3"
   },
   "dependencies": {
