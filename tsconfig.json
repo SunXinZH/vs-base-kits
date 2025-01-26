@@ -23,6 +23,6 @@
         "outDir": "./dist",
         "paths": {}
     },
-    "include": ["src","script"],
+    "include": ["src"],
     "exclude": ["test", "node_modules", "dist", "my-test"]
 }
