@@ -1,15 +1,23 @@
 {
   "name": "vsc-base-kits",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "some base kits from vscode source code",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "ts-node ./scripts/clean.ts && tsc"
+    "build": "ts-node ./scripts/clean.ts && tsc",
+    "publish": "yarn build && npm publish"
   },
   "repository": "git+https://github.com/SunXinZH/vs-base-kits.git",
   "keywords": [
