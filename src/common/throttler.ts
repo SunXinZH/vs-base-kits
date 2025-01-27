@@ -1,53 +1,61 @@
+import { generateUuid } from "./uuid";
+import { Emitter } from "./event";
+import { Disposable } from "./lifecycle";
+import { resolve } from "path";
+
 export interface ITask<T> {
-	(): T;
+  (): T;
 }
 
-export class Throttler {
+interface FactoryListItem<T> {
+  id: string;
+  task: ITask<T>;
+}
 
-	private activePromise: Promise<any> | null;
-	private queuedPromise: Promise<any> | null;
-	private queuedPromiseFactory: ITask<Promise<any>> | null;
+export class Throttler extends Disposable {
+  private activePromise: Promise<any> | null;
+  private queuedPromiseFactory: FactoryListItem<Promise<any>>[];
+  private _onPromiseCompleted = this._register(
+    new Emitter<{
+      id: string;
+      result: any;
+    }>()
+  );
 
-	constructor() {
-		this.activePromise = null;
-		this.queuedPromise = null;
-		this.queuedPromiseFactory = null;
-	}
+  constructor() {
+    super();
+    this.activePromise = null;
+    this.queuedPromiseFactory = [];
+  }
 
-	queue<T>(promiseFactory: ITask<Promise<T>>): Promise<T> {
-		if (this.activePromise) {
-			this.queuedPromiseFactory = promiseFactory;
+  queue<T>(promiseFactory: ITask<Promise<T>>): Promise<T> {
+    const taskId = generateUuid();
+      this.queuedPromiseFactory.push({
+        id: taskId,
+        task: promiseFactory,
+      });
+	  this.run();
+      return new Promise<T>((resolve) => {
+        const d = this._onPromiseCompleted.event((e) => {
+          if (e.id === taskId) {
+            resolve(e.result);
+          }
+        });
+      });
+  }
 
-			if (!this.queuedPromise) {
-				const onComplete = () => {
-					this.queuedPromise = null;
+  private async run(): Promise<void> {
+    if (this.queuedPromiseFactory.length > 0 && this.activePromise === null) {
+      const next = this.queuedPromiseFactory.splice(0, 1)[0];
+      this.activePromise = next.task();
+      const result = await this.activePromise;
+	  this.activePromise = null;
+      this._onPromiseCompleted.fire({
+        id: next.id,
+        result,
+      });
 
-					const result = this.queue(this.queuedPromiseFactory!);
-					this.queuedPromiseFactory = null;
-
-					return result;
-				};
-
-				this.queuedPromise = new Promise(resolve => {
-					this.activePromise!.then(onComplete, onComplete).then(resolve);
-				});
-			}
-
-			return new Promise((resolve, reject) => {
-				this.queuedPromise!.then(resolve, reject);
-			});
-		}
-
-		this.activePromise = promiseFactory();
-
-		return new Promise((resolve, reject) => {
-			this.activePromise!.then((result: T) => {
-				this.activePromise = null;
-				resolve(result);
-			}, (err: unknown) => {
-				this.activePromise = null;
-				reject(err);
-			});
-		});
-	}
+      this.run();
+    }
+  }
 }
