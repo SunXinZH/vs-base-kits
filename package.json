@@ -1,6 +1,6 @@
 {
   "name": "vsc-base-kits",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "some base kits from vscode source code",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -9,7 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "clean": "ts-node ./scripts/clean.ts",
+    "build": "yarn clean && tsc && rollup -c"
   },
   "repository": "git+https://github.com/SunXinZH/vs-base-kits.git",
   "keywords": [
