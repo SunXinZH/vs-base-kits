@@ -15,7 +15,7 @@ git clone https://github.com/yourusername/vs-base-kit.git
 or
 
 ```bash
-npm install vs-base-kit@latest
+npm install @sx/vs-base-kit@latest
 ```
 
 Then, you can either directly copy the files you need, or import the modules into your project.
